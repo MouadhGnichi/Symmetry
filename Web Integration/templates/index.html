@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="description"
+      content="Start your development with Steller landing page."
+    />
+    <meta name="author" content="Devcrud" />
+    <title>Project-Symmetry</title>
+    <!-- font icons -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='vendors/themify-icons/css/themify-icons.css') }}"
+    />
+    <!-- Bootstrap + Steller main styles -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/index.css') }}"
+    />
+    <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+/>
+
+    <script>
+      function clearFields() {
+        document.getElementById("search-form").elements[0].value = "";
+        document.getElementById("source-article").value = "";
+        document.getElementById("translated-article").value = "";
+        document.getElementById("missing-parts").value = "";
+
+        var sourceStatisticsContainer = document.getElementById(
+          "source-statistics-container"
+        );
+        if (sourceStatisticsContainer) {
+          sourceStatisticsContainer.remove();
+        }
+
+        var translatedStatisticsContainer = document.getElementById(
+          "translated-statistics-container"
+        );
+        if (translatedStatisticsContainer) {
+          translatedStatisticsContainer.remove();
+        }
+      }
+    </script>
+  </head>
+
+  <body data-spy="scroll" data-target=".navbar" data-offset="40" id="home">
+    <section id="contact">
+      <div class="dropdown">
+        <button class="dropbtn">&#9776;</button>
+        <div class="dropdown-content">
+          <a href="#">paid</a>
+          <ul>
+            <li>amazon</li>
+            <li>google cloud</li>
+          </ul>
+          <a href="#">free</a>
+          <ul>
+            <li>openai</li>
+            <li>deepL</li>
+          </ul>
+        </div>
+      </div>
+      <div class="container text-center">
+        <h6 class="section-title mb-2">Symmetry Interface</h6>
+        <div class="upload-style">
+          <form id="file-upload-form" action="/upload" method="post">
+            <input
+              type="file"
+              name="file"
+              accept=".txt, .pdf, .docx"
+              id="file-upload-input"
+            />
+            <button type="submit" class="file-upload-icon">
+                <i class="fas fa-cloud-upload-alt"></i>
+            </button>
+          </form>
+        </div>
+        <br>
+        <div class="form-group mb-2">
+          <form class="d-flex search-style" role="search" id="search-form">
+            <input
+              class="form-control me-2"
+              type="search"
+              name="article_input"
+              placeholder="Enter the link or title of the article"
+              aria-label="Search"
+            />
+            <select class="btn btn-light rounded" id="source-language">
+              <option value="en">English</option>
+              <option value="fr">French</option>
+              <option value="es">Spanish</option>
+              <option value="de">German</option>
+              <option value="ar">Arabic</option>
+              <option value="uk">Ukrainian</option>
+              <option value="it">Italian</option>
+              <option value="ro">Romanian</option>
+            </select>
+            <button class="btn btn-light rounded" type="submit">Search</button>
+          </form>
+        </div>
+        <div class="form">
+          <h6 class="subtitle subtitlecompar mb-2">
+            Select Translation model:
+            <select class="btn btn-danger" id="Translation-model">
+              <option value="googletranslate">GoogleTrans Online</option>
+              <option value="Marian">Marian Offline</option>
+              <option value="T5">T5 Offline</option>
+            </select>
+          </h6>
+        </div>
+        <div class="contact text-left">
+          <div class="form">
+            <h6 class="subtitle">
+              <b>Source Article</b>
+            </h6>
+            <br />
+            <div id="source-article-container">
+              <textarea
+                name="source-article"
+                id="source-article"
+                cols="30"
+                rows="5"
+                class="form-control"
+                placeholder="Source Article Text Here"
+                style="margin: 50px 0 0 0"
+              ></textarea>
+            </div>
+            <div id="source-statistics-container"></div>
+            <br />
+            <button class="btn btn-danger centered-button" id="translate-btn">
+              Translate
+            </button>
+          </div>
+          <div class="form">
+            <h6 class="subtitle"><b>Translated Article</b></h6>
+            <h6 class="subtitle">
+              Destination Language:
+              <select class="btn btn-light rounded" id="destination-language">
+                <option value="en">English</option>
+                <option value="fr">French</option>
+                <option value="es">Spanish</option>
+                <option value="de">German</option>
+                <option value="ar">Arabic</option>
+                <option value="uk">Ukrainian</option>
+                <option value="it">Italian</option>
+                <option value="ro">Romanian</option>
+              </select>
+            </h6>
+            <form>
+              <div class="form-group">
+                <textarea
+                  name="translated-article"
+                  id="translated-article"
+                  cols="30"
+                  rows="5"
+                  class="form-control"
+                  placeholder="Translated Article Text Here"
+                  readonly
+                ></textarea>
+              </div>
+            </form>
+            <div id="translated-statistics-container"></div>
+            <button class="btn btn-danger centered-button" id="compare-btn">
+              Compare
+            </button>
+          </div>
+        </div>
+        <div class="container text-right">
+          <button class="btn btn-danger rounded" id="download-btn">
+            <i class="fas fa-download"></i>
+          </button>
+        </div>
+          <input
+            class="form-control me-2 "
+            type="search"
+            id="search-article"
+            name="article_title"
+            placeholder="Enter the wikipedia title of the translated article"
+            aria-label="Search"
+          />
+        <div id="comparison-zone" class="comparison-zone">
+          <h6 class="section-title mb-4">Comparison Zone</h6>
+          <div class="contact">
+            <div class="form">
+              <div>
+                <textarea
+                  name="missing-parts"
+                  id="missing-parts"
+                  cols="30"
+                  rows="5"
+                  class="form-control"
+                  placeholder="Missing Parts"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-danger" id="clear-btn" onclick="clearFields()">
+          Clear
+        </button>
+      </div>
+    </section>
+    <!-- End of Contact Section -->
+
+    <!-- core  -->
+    <script src="{{ url_for('static', filename='vendors/jquery/jquery-3.4.1.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/bootstrap/bootstrap.bundle.js') }}"></script>
+    <!-- bootstrap 3 affix -->
+    <script src="{{ url_for('static', filename='vendors/bootstrap/bootstrap.affix.js') }}"></script>
+
+    <!-- steller js -->
+    <script src="{{ url_for('static', filename='js/steller.js') }}"></script>
+
+    <script>
+      document
+        .getElementById("search-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          var xhr = new XMLHttpRequest();
+          var articleInput =
+            document.getElementById("search-form").elements[0].value;
+          var languageSelect = document.getElementById("source-language");
+          var language =
+            languageSelect.options[languageSelect.selectedIndex].value;
+          xhr.open("POST", "/scrape", true);
+          xhr.setRequestHeader(
+            "Content-Type",
+            "application/x-www-form-urlencoded"
+          );
+          xhr.onload = function () {
+            if (xhr.status === 200) {
+              var response = JSON.parse(xhr.responseText);
+              document.getElementById("source-article-container").innerHTML =
+                '<div class="form-group">' +
+                '<textarea name="source-article" id="source-article" cols="30" rows="5" class="form-control" placeholder="Source Article Text Here">' +
+                response.content +
+                "</textarea>" +
+                "</div>";
+
+              var sourceStatisticsContainer = document.getElementById(
+                "source-statistics-container"
+              );
+              if (sourceStatisticsContainer) {
+                sourceStatisticsContainer.innerHTML =
+                  '<h6 class="subtitle">Word Count: ' +
+                  response.word_count +
+                  "</h6>" +
+                  '<h6 class="subtitle">Paragraph Count: ' +
+                  response.paragraph_count +
+                  "</h6>" +
+                  '<h6 class="subtitle">Length of Article: ' +
+                  response.length_article +
+                  "</h6>" +
+                  '<h6 class="subtitle">Execution Time: ' +
+                  response.execution_time +
+                  "</h6>";
+              } else {
+                sourceStatisticsContainer = document.createElement("div");
+                sourceStatisticsContainer.id = "source-statistics-container";
+                sourceStatisticsContainer.innerHTML =
+                  '<h6 class="subtitle">Word Count: ' +
+                  response.word_count +
+                  "</h6>" +
+                  '<h6 class="subtitle">Paragraph Count: ' +
+                  response.paragraph_count +
+                  "</h6>" +
+                  '<h6 class="subtitle">Length of Article: ' +
+                  response.length_article +
+                  "</h6>" +
+                  '<h6 class="subtitle">Execution Time: ' +
+                  response.execution_time +
+                  "</h6>";
+                document
+                  .getElementById("source-article-container")
+                  .appendChild(sourceStatisticsContainer);
+              }
+            }
+          };
+          xhr.send(
+            "article_input=" +
+              encodeURIComponent(articleInput) +
+              "&language=" +
+              encodeURIComponent(language)
+          );
+        });
+
+      document
+        .getElementById("translate-btn")
+        .addEventListener("click", function () {
+          var sourceArticle = document.getElementById("source-article").value;
+          var translatedArticle =
+            document.getElementById("translated-article").value;
+          var destinationLanguageSelect = document.getElementById(
+            "destination-language"
+          );
+          var destinationLanguage =
+            destinationLanguageSelect.options[
+              destinationLanguageSelect.selectedIndex
+            ].value;
+          var translationModelSelect =
+            document.getElementById("Translation-model");
+          var translationModel =
+            translationModelSelect.options[translationModelSelect.selectedIndex]
+              .value;
+
+          if (sourceArticle.trim() === "") {
+            alert("Please enter a source article to translate.");
+            return;
+          }
+
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "/translate", true);
+          xhr.setRequestHeader(
+            "Content-Type",
+            "application/x-www-form-urlencoded"
+          );
+          xhr.onload = function () {
+            if (xhr.status === 200) {
+              var response = JSON.parse(xhr.responseText);
+              document.getElementById("translated-article").value =
+                response.translated_text;
+
+              var translatedStatisticsContainer = document.getElementById(
+                "translated-statistics-container"
+              );
+              if (translatedStatisticsContainer) {
+                translatedStatisticsContainer.innerHTML =
+                  '<h6 class="subtitle">Word Count: ' +
+                  response.word_count +
+                  "</h6>" +
+                  '<h6 class="subtitle">Paragraph Count: ' +
+                  response.paragraph_count +
+                  "</h6>" +
+                  '<h6 class="subtitle">Length of Article: ' +
+                  response.length_article +
+                  "</h6>" +
+                  '<h6 class="subtitle">Execution Time: ' +
+                  response.execution_time +
+                  "</h6>";
+              } else {
+                translatedStatisticsContainer = document.createElement("div");
+                translatedStatisticsContainer.id =
+                  "translated-statistics-container";
+                translatedStatisticsContainer.innerHTML =
+                  '<h6 class="subtitle">Word Count: ' +
+                  response.word_count +
+                  "</h6>" +
+                  '<h6 class="subtitle">Paragraph Count: ' +
+                  response.paragraph_count +
+                  "</h6>" +
+                  '<h6 class="subtitle">Length of Article: ' +
+                  response.length_article +
+                  "</h6>" +
+                  '<h6 class="subtitle">Execution Time: ' +
+                  response.execution_time +
+                  "</h6>";
+                document
+                  .getElementById("source-article-container")
+                  .appendChild(translatedStatisticsContainer);
+              }
+            }
+          };
+          xhr.send(
+            "source_article=" +
+              encodeURIComponent(sourceArticle) +
+              "&source_language=" +
+              encodeURIComponent("en") +
+              "&destination_language=" +
+              encodeURIComponent(destinationLanguage) +
+              "&translation_model=" +
+              encodeURIComponent(translationModel) +
+              "translated_article=" +
+              encodeURIComponent(translatedArticle)
+          );
+        });
+
+      document
+        .getElementById("compare-btn")
+        .addEventListener("click", function () {
+          var translatedArticle =
+            document.getElementById("translated-article").value;
+          var articleTitle = document.getElementById("search-article").value;
+          var comparisonZone = document.getElementById("comparison-zone");
+
+          if (translatedArticle.trim() !== "") {
+            comparisonZone.style.display = "block";
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/compare", true);
+            xhr.setRequestHeader(
+              "Content-Type",
+              "application/x-www-form-urlencoded"
+            );
+            xhr.onload = function () {
+              console.log(xhr.status);
+              if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                console.log(response);
+
+                var missingParts = response.missing_parts;
+                var df = response.grouped_df;
+                console.log("df", df);
+                if (missingParts !== "") {
+                  document.querySelector(".comparison-zone textarea").value =
+                    missingParts;
+                } else {
+                  document.querySelector(".comparison-zone textarea").value =
+                    "No missing parts found.";
+                }
+              }
+            };
+            xhr.send(
+              "translated_article=" +
+                encodeURIComponent(translatedArticle) +
+                "&article_title=" +
+                encodeURIComponent(articleTitle)
+            );
+          } else {
+            comparisonZone.style.display = "none";
+            alert("Please translate the article before comparing.");
+          }
+        });
+
+      document
+        .getElementById("download-btn")
+        .addEventListener("click", function () {
+          var translatedArticle =
+            document.getElementById("translated-article").value;
+          if (translatedArticle.trim() === "") {
+            alert(
+              "Translated article is empty. Please translate an article first."
+            );
+            return;
+          }
+
+          var articleName = document
+            .getElementById("search-form")
+            .elements[0].value.trim();
+          var fileName = articleName + ".txt";
+
+          var element = document.createElement("a");
+          element.setAttribute(
+            "href",
+            "data:text/plain;charset=utf-8," +
+              encodeURIComponent(translatedArticle)
+          );
+          element.setAttribute("download", fileName);
+          element.style.display = "none";
+          document.body.appendChild(element);
+          element.click();
+          document.body.removeChild(element);
+        });
+
+      document
+        .getElementById("file-upload-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          var fileInput = document.getElementById("file-upload-input");
+          var file = fileInput.files[0];
+
+          if (file) {
+            var formData = new FormData();
+            formData.append("file", file);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/upload", true);
+            xhr.onload = function () {
+              if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.content) {
+                  var sourceArticleTextarea =
+                    document.getElementById("source-article");
+                  sourceArticleTextarea.value = response.content;
+                } else {
+                  alert(
+                    "File upload failed or invalid file format. Please try again."
+                  );
+                }
+              } else {
+                alert(
+                  "An error occurred during file upload. Please try again."
+                );
+              }
+            };
+            xhr.send(formData);
+          }
+        });
+    </script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    function displayDataFrame(dataFrame) {
+      var popupWindow = window.open(
+        "",
+        "_blank",
+        "width=800,height=600,scrollbars=yes,resizable=yes"
+      );
+
+      var articlePhrases = dataFrame["Article Phrase"];
+      var translations = dataFrame["Translation"];
+      var similarities = dataFrame["Similarity"];
+
+      var content = "<pre>";
+      for (var index in articlePhrases) {
+        var similarity = similarities[index];
+        var bgColor = similarity > 0.9 ? "rgba(0, 255, 0, 0.3)" : "rgba(255, 0, 0, 0.3)";
+        content +=
+          '<span style="background-color:' +
+          bgColor +
+          ';">' +
+          articlePhrases[index] +
+          " + " +
+          translations[index] +
+          "</span>\n\n";
+      }
+      content += "</pre>";
+
+      popupWindow.document.write(content);
+    }
+
+    document
+      .getElementById("compare-btn")
+      .addEventListener("click", function () {
+        var translatedArticle = document.getElementById("translated-article").value;
+        var articleTitle = document.getElementById("search-article").value;
+        console.log("articleTitle", articleTitle);
+        if (translatedArticle.trim() !== "") {
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "/compare", true);
+          xhr.setRequestHeader(
+            "Content-Type",
+            "application/x-www-form-urlencoded"
+          );
+          xhr.onload = function () {
+            if (xhr.status === 200) {
+              var response = JSON.parse(xhr.responseText);
+              var df = response.grouped_df;
+              displayDataFrame(df);
+            }
+          };
+          xhr.send(
+            "translated_article=" +
+              encodeURIComponent(translatedArticle) +
+              "&article_title=" +
+              encodeURIComponent(articleTitle)
+          );
+        } else {
+          alert("Please translate the article before comparing.");
+        }
+      });
+  });
+</script>
+
+  </body>
+</html>
