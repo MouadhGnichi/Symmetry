@@ -9,7 +9,9 @@ The main tasks made for this app are:
 
 1-Web scraping of Wikipedia Content
 
-2-Content Translation whether using trained model(RNN, LSTM) or pre-trained models(Transformer T5, Marian, Google Translate)
+2-Text Preprocessing using NLP techniques(Tokenization, Lemmatization, stop words removal...) to extract meaning from each word
+
+3-Content Translation whether using trained model(RNN, LSTM) or pre-trained models(Transformer T5, Marian, Google Translate)
 
 3-Content Semantic Similarity.
 
