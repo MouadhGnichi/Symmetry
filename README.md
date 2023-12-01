@@ -12,3 +12,6 @@ The main tasks made for this app are:
 4-Recommendation system for the missing content between two languages.
 
 Feel free to run this flask app to better understand the mechanism of the application
+
+1: git clone the project on your machine
+2: flask run
