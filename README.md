@@ -6,6 +6,7 @@ Wikipedia suffers from content dissmilarity between world language.
 So, the idea here to create translation models with AI to obtain similar content between all languages.
 
 The main tasks made for this app are:
+
 1-Web scraping of Wikipedia Content
 
 2-Content Translation whether using trained model(RNN, LSTM) or pre-trained models(Transformer T5, Marian, Google Translate)
