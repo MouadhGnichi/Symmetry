@@ -14,4 +14,5 @@ The main tasks made for this app are:
 Feel free to run this flask app to better understand the mechanism of the application
 
 1: git clone the project on your machine
+
 2: flask run
