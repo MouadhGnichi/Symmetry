@@ -13,9 +13,9 @@ The main tasks made for this app are:
 
 3-Content Translation whether using trained model(RNN, LSTM) or pre-trained models(Transformer T5, Marian, Google Translate)
 
-3-Content Semantic Similarity.
+4-Content Semantic Similarity.
 
-4-Recommendation system for the missing content between two languages.
+5-Recommendation system for the missing content between two languages.
 
 Feel free to run this flask app to better understand the mechanism of the application
 
